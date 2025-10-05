@@ -3,10 +3,21 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+
+    QDir currentProjectPath = QCoreApplication::applicationDirPath();
+    QString dirStr          = currentProjectPath.absolutePath();
+    QString fullPathDB      = dirStr + "/" + db::ConstDB::NameDB;
+
+    QString fullpath  = fullPathDB;
+    QString shortpath = QFileInfo(fullpath).path();
+    QString filename  = QFileInfo(fullpath).fileName();
+
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -17,7 +28,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    MainWindow w;
+    MainWindow w(fullpath, shortpath, filename);
     w.show();
     return a.exec();
 }

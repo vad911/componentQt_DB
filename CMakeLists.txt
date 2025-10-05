@@ -26,6 +26,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(componentQt_DB
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        types.h types.cpp
+        aux_class.h aux_class.cpp
+        aux_table.h aux_table.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET componentQt_DB APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -49,7 +52,9 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(componentQt_DB PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+add_subdirectory(databaseSQLite)
+
+target_link_libraries(componentQt_DB PRIVATE Qt${QT_VERSION_MAJOR}::Widgets databaseSQLite)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
